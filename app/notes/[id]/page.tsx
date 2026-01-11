@@ -3,11 +3,12 @@ import NotePreview from '@/components/NotePreview/NotePreview';
 import { Modal } from '@/components/Modal/Modal';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function NotePage({ params }: PageProps) {
-  const note = await fetchNotesById(params.id);
+  const { id } = await params; 
+  const note = await fetchNotesById(id);
 
   return (
     <Modal>
@@ -15,4 +16,3 @@ export default async function NotePage({ params }: PageProps) {
     </Modal>
   );
 }
-
