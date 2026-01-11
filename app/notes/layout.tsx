@@ -3,7 +3,7 @@ import css from './LayoutNotes.module.css';
 type Props = {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-  modal: React.ReactNode;
+  modal?: React.ReactNode;
 };
 
 export default function NotesLayout({ children, sidebar, modal }: Props) {
@@ -12,7 +12,7 @@ export default function NotesLayout({ children, sidebar, modal }: Props) {
       <aside className={css.sidebar}>{sidebar}</aside>
 
       <div className={css.notesWrapper}>{children}</div>
-      <div>{modal}</div>
+      {modal && <div className={css.modalWrapper}>{modal}</div>}
     </section>
   );
 }

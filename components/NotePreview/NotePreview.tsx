@@ -1,19 +1,25 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
-import type { Note } from '@/types/note';
-import css from './NotePreview.module.css';
+import { Note } from '@/types/note';
+import css from "./NotePreview.module.css";
 
 interface NotePreviewProps {
   note: Note;
 }
 
-export function NotePreview({ note }: NotePreviewProps) {
+export default function NotePreview({ note }: NotePreviewProps) {
   const router = useRouter();
 
+  const closeModal = () => {
+    router.back(); 
+  };
+
   return (
-    <div className={css.container}>
+    
+      <div className={css.container}>
       <div className={css.item}>
-        <button onClick={() => router.back()} className={css.backBtn}>
+        <button onClick={closeModal} className={css.backBtn}>
           Close
         </button>
         <div className={css.header}>
@@ -23,5 +29,7 @@ export function NotePreview({ note }: NotePreviewProps) {
         <p className={css.date}>{note.createdAt}</p>
       </div>
     </div>
+    
+    
   );
 }
