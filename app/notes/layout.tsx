@@ -6,13 +6,13 @@ type Props = {
   modal?: React.ReactNode;
 };
 
-export default function NotesLayout({ children, sidebar, modal }: Props) {
+export default function NotesLayout({ children, sidebar,modal }: Props) {
   return (
     <section className={css.container}>
       <aside className={css.sidebar}>{sidebar}</aside>
 
       <div className={css.notesWrapper}>{children}</div>
-      {modal && <div className={css.modalWrapper}>{modal}</div>}
+     {modal}
     </section>
   );
 }

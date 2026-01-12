@@ -1,18 +1,17 @@
-import { fetchNotesById } from '@/lib/api';
-import NotePreview from '@/components/NotePreview/NotePreview';
-import { Modal } from '@/components/Modal/Modal';
+import  NoteDetailsClient  from "./NoteDetails.client";
+import { fetchNotesById } from "@/lib/api";
+import type { Note } from "@/types/note";
 
-interface PageProps {
-  params: Promise<{ id: string }>;
+export default async function NotePage({
+  params,
+}: {
+  params: { id: string } | Promise<{ id: string }>;
+}) {
+  
+  const resolvedParams: { id: string } = await params;
+
+  const note: Note = await fetchNotesById(resolvedParams.id);
+
+  return <NoteDetailsClient noteId={note.id} />;
 }
 
-export default async function NotePage({ params }: PageProps) {
-  const { id } = await params; 
-  const note = await fetchNotesById(id);
-
-  return (
-    <Modal>
-      <NotePreview note={note} />
-    </Modal>
-  );
-}

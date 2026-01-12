@@ -4,10 +4,8 @@ import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import css from './Modal.module.css';
 
-interface ModalProps {
-  children: React.ReactNode;
-  
-}
+type ModalProps = {
+  children: React.ReactNode;}
 
 export function Modal({ children, }: ModalProps) {
   const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
