@@ -7,7 +7,7 @@ import css from './Modal.module.css';
 type ModalProps = {
   children: React.ReactNode;}
 
-export function Modal({ children, }: ModalProps) {
+export function Modal({ children }: ModalProps) {
   const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
   const router = useRouter();
 
