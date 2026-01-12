@@ -2,6 +2,8 @@ import  NoteDetailsClient  from "./NoteDetails.client";
 import { fetchNotesById } from "@/lib/api";
 import type { Note } from "@/types/note";
 
+export const dynamic = 'force-dynamic'; 
+
 export default async function NotePage({
   params,
 }: {

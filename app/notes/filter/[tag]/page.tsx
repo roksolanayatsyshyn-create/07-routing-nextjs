@@ -1,5 +1,6 @@
 import NotesClient from '@/app/notes/Notes.client';
 
+export const dynamic = 'force-dynamic';
 type Props = {
   params: Promise<{ tag: string }>; 
   searchParams: { page?: string; search?: string };
