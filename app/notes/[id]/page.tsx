@@ -1,4 +1,4 @@
-import NoteDetailsClient from './NoteDetails.client';
+import NoteDetailsClient from './NotePreview.client';
 import { fetchNotesById } from '@/lib/api';
 import type { Note } from '@/types/note';
 

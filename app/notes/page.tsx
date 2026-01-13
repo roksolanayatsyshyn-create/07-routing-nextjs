@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import NotesClient from './Notes.client';
+import NotesClient from './filter/[...slug]/Notes.client';
 import { fetchNotes } from '@/lib/api';
 import { redirect } from 'next/navigation';
 
