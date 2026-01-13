@@ -8,7 +8,7 @@ import { SearchBox } from '@/components/SearchBox/SearchBox';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { Modal } from '@/components/Modal/Modal';
 import { NoteForm } from '@/components/NoteForm/NoteForm';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { fetchNotesByTag, fetchNotes } from '@/lib/api';
 
@@ -16,18 +16,13 @@ import css from './NotesPage.module.css';
 
 const PER_PAGE = 12;
 
-export default function NotesClient({
-  searchParams,
-}: {
-  searchParams: {
-    tag?: string;
-    search?: string;
-    page?: string;
-  };
-}) {
-  const tag = searchParams.tag ?? 'all';
-  const [search, setSearch] = useState(searchParams.search ?? '');
-  const [page, setPage] = useState(Number(searchParams.page) || 1);
+export default function NotesClient() {
+  const params = useParams();
+  const searchParams = useSearchParams();
+
+  const tag = params.slug?.[0] ?? 'all';
+  const [search, setSearch] = useState(searchParams.get('search') ?? '');
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [debouncedSearch] = useDebounce(search, 500);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,7 +71,7 @@ export default function NotesClient({
       {notes.length > 0 && <NoteList notes={notes} />}
 
       {isModalOpen && (
-        <Modal >
+        <Modal>
           <NoteForm onCancel={() => setIsModalOpen(false)} />
         </Modal>
       )}

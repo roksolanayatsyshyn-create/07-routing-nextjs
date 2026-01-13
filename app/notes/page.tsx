@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-query';
 import NotesClient from './Notes.client';
 import { fetchNotes } from '@/lib/api';
+import { redirect } from 'next/navigation';
 
 interface PageProps {
   searchParams: Promise<{
@@ -15,9 +16,12 @@ interface PageProps {
 }
 
 export default async function NotesPage({ searchParams }: PageProps) {
-  const params = await searchParams;   
+  const params = await searchParams;
 
   const { tag = '', search = '', page = '1' } = params;
+  if (!tag) {
+    redirect('/notes/filter/all');
+  }
   const pageNumber = Number(page);
   const PER_PAGE = 12;
 
@@ -30,7 +34,7 @@ export default async function NotesPage({ searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient searchParams={{ tag, search, page }} />
+      <NotesClient />
     </HydrationBoundary>
   );
 }

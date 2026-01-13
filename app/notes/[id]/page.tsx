@@ -1,19 +1,17 @@
-import  NoteDetailsClient  from "./NoteDetails.client";
-import { fetchNotesById } from "@/lib/api";
-import type { Note } from "@/types/note";
+import NoteDetailsClient from './NoteDetails.client';
+import { fetchNotesById } from '@/lib/api';
+import type { Note } from '@/types/note';
 
-export const dynamic = 'force-dynamic'; 
+export const dynamic = 'force-dynamic';
 
 export default async function NotePage({
   params,
 }: {
   params: { id: string } | Promise<{ id: string }>;
 }) {
-  
   const resolvedParams: { id: string } = await params;
 
   const note: Note = await fetchNotesById(resolvedParams.id);
 
   return <NoteDetailsClient noteId={note.id} />;
 }
-

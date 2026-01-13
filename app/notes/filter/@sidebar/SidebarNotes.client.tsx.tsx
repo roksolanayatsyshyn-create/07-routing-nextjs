@@ -1,9 +1,15 @@
+'use client';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 import { getAllTags } from '@/lib/api';
 import css from './SidebarNotes.module.css';
 
-export default async function SidebarNotes() {
-  const tags = await getAllTags();
+export default function SidebarNotesClient() {
+  const { data: tags = [] } = useQuery({
+    queryKey: ['tags'],
+    queryFn: getAllTags,
+  });
+
   return (
     <ul className={css.menuList}>
       {/* список тегів */}

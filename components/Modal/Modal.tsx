@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import css from './Modal.module.css';
 
 type ModalProps = {
-  children: React.ReactNode;}
+  children: React.ReactNode;
+};
 
 export function Modal({ children }: ModalProps) {
   const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
