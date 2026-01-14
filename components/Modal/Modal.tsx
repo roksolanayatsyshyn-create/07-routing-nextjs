@@ -1,6 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useEffect } from 'react';
 import css from './Modal.module.css';
 
 type ModalProps = {
@@ -9,8 +8,7 @@ type ModalProps = {
 };
 
 export function Modal({ children,onClose }: ModalProps) {
- const [modalRoot] = useState(() => document.getElementById('modal-root'));
-
+ 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -25,19 +23,17 @@ export function Modal({ children,onClose }: ModalProps) {
     };
   }, [onClose]);
 
-  if (!modalRoot) return null;
-
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) onClose();
   };
 
-  return createPortal(
+  return (
     <div className={css.backdrop} onClick={handleBackdropClick}>
       <div className={css.modal}>
         
         {children}
         </div>
-    </div>,
-    modalRoot
+    </div>
+    
   );
 }
