@@ -38,8 +38,7 @@ export default function RootLayout({
           {modal}
           <Footer />
         </Providers>
-        <div id="modal-root"></div>
-        <div id="__next"></div>
+        
   
       </body>
     </html>

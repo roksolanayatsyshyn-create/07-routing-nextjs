@@ -4,8 +4,9 @@ import NotesClient from '@/app/notes/filter/[...slug]/Notes.client';
 import { fetchNotes } from "@/lib/api";
 
 export const dynamic = 'force-dynamic';
+
 interface PageProps {
-  params: { slug?: string[] };
+  params:Promise<{ slug: string[] }>;
   searchParams?: { page?: string; search?: string };
 }
 
@@ -13,8 +14,8 @@ export default async function FilteredNotesPage({
   params,
   searchParams,
 }: PageProps) {
-  
-  const tag = params.slug?.[0] ?? 'all';
+  const { slug } = await params;
+  const tag = slug?.[0] ?? 'all';
   const page = Number(searchParams?.page ?? 1);
   const search = searchParams?.search ?? '';
 

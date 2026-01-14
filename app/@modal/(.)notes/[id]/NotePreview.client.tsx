@@ -19,6 +19,7 @@ export default function NotePreview({ id }: NotePreviewProps) {
   } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount:false,
   });
 
   const closeModal = () => {
