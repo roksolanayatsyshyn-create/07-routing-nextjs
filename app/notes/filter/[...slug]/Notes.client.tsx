@@ -8,57 +8,59 @@ import { SearchBox } from '@/components/SearchBox/SearchBox';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { Modal } from '@/components/Modal/Modal';
 import { NoteForm } from '@/components/NoteForm/NoteForm';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-
-import { fetchNotesByTag, fetchNotes } from '@/lib/api';
-
+import { useRouter } from 'next/navigation';
+import { fetchNotes } from '@/lib/api';
 import css from './NotesPage.module.css';
 
 const PER_PAGE = 12;
 
-export default function NotesClient() {
-  const params = useParams();
-  const searchParams = useSearchParams();
+interface NotesClientProps {
+  tag: string;
+  page: number;
+  search: string;
+}
 
-  const tag = params.slug?.[0] ?? 'all';
-  const [search, setSearch] = useState(searchParams.get('search') ?? '');
-  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
-  const [debouncedSearch] = useDebounce(search, 500);
+export default function NotesClient({ tag
+  , page, search 
+}: NotesClientProps) {
+  const router = useRouter();
+  
 
+  const [searchValue, setSearchValue] = useState(search);
+  const [currentPage, setCurrentPage] = useState(page);
+  const [debouncedSearch] = useDebounce(searchValue, 500);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const router = useRouter();
-
   const { data } = useQuery({
-    queryKey: ['notes', tag, debouncedSearch, page],
-    queryFn: () =>
-      tag === 'all'
-        ? fetchNotes(debouncedSearch, page, PER_PAGE)
-        : fetchNotesByTag(tag, page, PER_PAGE),
-  });
+  queryKey: ['notes', { tag, search: debouncedSearch, page: currentPage }],
+  queryFn: () => fetchNotes(debouncedSearch, currentPage, PER_PAGE, tag),
+  staleTime: 1000 * 60,
+});
+
 
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
 
   const handleSearchChange = (value: string) => {
-    setSearch(value);
-    setPage(1);
+    setSearchValue(value);
+    setCurrentPage(1);
     router.push(`/notes/filter/${tag}?search=${value}&page=1`);
   };
 
   const handlePageChange = (p: number) => {
-    setPage(p);
+    setCurrentPage(p);
     router.push(`/notes/filter/${tag}?search=${debouncedSearch}&page=${p}`);
   };
 
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox value={search} onChange={handleSearchChange} />
+        <SearchBox value={searchValue} onChange={handleSearchChange} />
+
         {totalPages > 1 && (
           <Pagination
             totalPages={totalPages}
-            currentPage={page}
+            currentPage={currentPage}
             onPageChange={handlePageChange}
           />
         )}
@@ -71,10 +73,11 @@ export default function NotesClient() {
       {notes.length > 0 && <NoteList notes={notes} />}
 
       {isModalOpen && (
-        <Modal>
+        <Modal onClose={() => setIsModalOpen(false)}>
           <NoteForm onCancel={() => setIsModalOpen(false)} />
         </Modal>
       )}
     </div>
   );
 }
+
